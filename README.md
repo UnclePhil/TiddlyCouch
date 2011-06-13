@@ -1,16 +1,16 @@
-## TiddlyCouch
+## TiddlyCouch : unclephil Version
 
 TiddlyCouch lets you serve a TiddlyWiki from CouchDB and read and write individual tiddlers to the database. Each tiddler is saved as a separate document.
 It consists of a couchapp and some TiddlyWiki plugins.
 
-[Demo.](http://saq.couchone.com/tiddlydb/_design/tiddlycouch/_list/tiddlywiki/tiddlers)
+[Demo Saq.](http://saq.couchone.com/tiddlydb/_design/tiddlycouch/_list/tiddlywiki/tiddlers)
 
-## Deploying
 
-Option 1: replicate the [demo database](http://saq.couchone.com/tiddlydb)
+This is a lightweight version create by Ph Koenig (UnclePhil)
+*JEOF (Just EnOugh File) in couchapp
+*Some rewrites
+*Windows version of deploy
+*Some patching if save tiddler function
 
-Option 2: install [couchapp](http://github.com/couchapp/couchapp), checkout this repository and run "./deploy URL-for-your-database"
+[WorkingVersion Unclephil.](http://tc.unclephil.net)
 
-## Notes
-
-This is the product of a quick hacking session with [FND](http://fnd.lewcid.org) and is meant as a demo rather than a finished product.
