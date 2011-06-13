@@ -1,7 +1,7 @@
 {
 	"env": {
 		"default": {
-			"db": "http://fnd.couchone.com"
+			"db": "http://unclephil.couchone.com"
 		}
 	}
 }
