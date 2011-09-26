@@ -24,7 +24,7 @@ if (config.options.chkCouchLoginShowBackstage==undefined)
   config.options.chkCouchLoginShowBackstage=true;
 if (config.options.txtCouchLogoutTheme==undefined)
   config.options.txtCouchLogoutTheme='';
-if (config.options.chkCouchLogouReadOnly==undefined)
+if (config.options.chkCouchLogoutReadOnly==undefined)
   config.options.chkCouchLogoutReadOnly=true;
 if (config.options.chkCouchLogoutShowBackstage==undefined)
   config.options.chkCouchLogoutShowBackstage=false;

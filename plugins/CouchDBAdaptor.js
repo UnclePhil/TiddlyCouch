@@ -1,5 +1,5 @@
 /***
-|''Name''|CouchDBAdaptor|
+|''Name''|CouchDBAdaptor| 
 |''Description''|adaptor for interacting with CouchDB|
 |''Author:''|FND|
 |''Version''|0.1.0|
