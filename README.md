@@ -12,8 +12,16 @@ This is a lightweight version create by Ph Koenig (UnclePhil)
 
 * JEOF (Just EnOugh File) in couchapp
 * Some rewrites (the couch one)
-* Windows version of deploy.cmd
+* Windows and Linux version of deploy.(cmd|sh)
 * Some patching in save tiddler function
 
 [WorkingVersion Unclephil.](http://tc.unclephil.net)
 
+#Knowed Problems:
+* Backstage is not toally working
+** Import of external tiddlers is not working
+* Still some border effect with login/logout
+*Rss is not working (exist some atom created by Bauwe)
+
+#Working On
+* import tiddler routine
