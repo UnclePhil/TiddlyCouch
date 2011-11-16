@@ -105,7 +105,7 @@ adaptor.prototype.deleteTiddler = function(tiddler, context, userParams, callbac
 	//if(!bag) {
 	//	return adaptor.noBagErrorMessage;
 	//}
-	var uri = uriTemplate.format([context.hot, adaptor.normalizeTitle(context.workspace),
+	var uri = uriTemplate.format([context.host, adaptor.normalizeTitle(context.workspace),
 		adaptor.normalizeTitle(tiddler.fields["server.id"]),tiddler.fields["server.page.revision"]]);
 	var req = httpReq("DELETE", uri, adaptor.deleteTiddlerCallback, context, null,
 		null, null, null, null, true);
@@ -128,6 +128,102 @@ adaptor.normalizeTitle = function(title) {
 
 // since the document id is currently indepedent of tiddler title, we can simply update the document on renames by saving the new copy
 adaptor.prototype.moveTiddler = adaptor.prototype.putTiddler;
+
+
+// added 20111116, copied from tiddlyweb adapatator
+// retrieve a list of tiddlers
+
+// retrieve a list of workspaces
+adaptor.prototype.getWorkspaceList = function(context, userParams, callback) {
+	context = this.setContext(context, userParams, callback);
+	context.workspaces = [];
+	var uriTemplate = "%0/_all_dbs"; // XXX: bags?
+	var uri = uriTemplate.format([context.host]);
+	var req = httpReq("GET", uri, adaptor.getWorkspaceListCallback,
+		context, { accept: adaptor.mimeType }, null, null, null, null, true);
+	return typeof req == "string" ? req : true;
+};
+
+adaptor.getWorkspaceListCallback = function(status, context, responseText, uri, xhr) {
+	context.status = status;
+	context.statusText = xhr.statusText;
+	context.httpStatus = xhr.status;
+	if(status) {
+		try {
+			var workspaces = $.evalJSON(responseText);
+		} catch(ex) {
+			context.status = false; // XXX: correct?
+			context.statusText = exceptionText(ex, adaptor.parsingErrorMessage);
+			if(context.callback) {
+				context.callback(context, context.userParams);
+			}
+			return;
+		}
+		context.workspaces = workspaces.map(function(itm) { return { title: itm }; });
+	}
+	if(context.callback) {
+		context.callback(context, context.userParams);
+	}
+};
+
+
+
+adaptor.prototype.getTiddlerList = function(context, userParams, callback) {
+	context = this.setContext(context, userParams, callback);
+	var uriTemplate = "%0/%1/_design/tiddlycouch/_view/tiddlers%2";
+	var params = context.filters ? "?" + context.filters : "";
+	if(context.format) {
+		params = context.format + params;
+	}
+	var uri = uriTemplate.format([context.host,	adaptor.normalizeTitle(context.workspace), params]);
+	var req = httpReq("GET", uri, adaptor.getTiddlerListCallback, context, merge({ accept: adaptor.mimeType }, context.headers), null, null, null, null, true);
+	return typeof req == "string" ? req : true;
+};
+
+adaptor.getTiddlerListCallback = function(status, context, responseText, uri, xhr) {
+	context.status = status;
+	context.statusText = xhr.statusText;
+	context.httpStatus = xhr.status;
+	if(status) {
+		context.tiddlers = [];
+		try {
+			var tiddlers = $.evalJSON(responseText).rows; //# NB: not actual tiddler instances
+		} catch(ex) {
+			context.status = false; // XXX: correct?
+			context.statusText = exceptionText(ex, adaptor.parsingErrorMessage);
+			if(context.callback) {
+				context.callback(context, context.userParams);
+			}
+			return;
+		}
+		for(var i = 0; i < tiddlers.length; i++) {
+			var tiddler = adaptor.toTiddler(tiddlers[i].value, context.host, context.workspace );
+			context.tiddlers.push(tiddler);
+		}
+	}
+	if(context.callback) {
+		context.callback(context, context.userParams);
+	}
+};
+
+// create Tiddler instance from TiddlyWeb tiddler JSON
+adaptor.toTiddler = function(json, host, workspace) {
+	var created = Date.convertFromYYYYMMDDHHMM(json.created);
+	var modified = Date.convertFromYYYYMMDDHHMM(json.modified);
+	var fields = json.fields || [];
+	fields["server.type"] = adaptor.serverType;
+	fields["server.host"] = host;
+	fields["server.id"] = json._id;
+	if(json.type && json.type != "None") {
+		fields["server.content-type"] = json.type;
+	}
+	fields["server.page.revision"] = json._rev;
+	fields["server.workspace"] = workspace;
+	var tiddler = new Tiddler(json.title);
+	tiddler.assign(tiddler.title, json.text, json.modifier, modified, json.tags,
+		created, json.fields, json.creator);
+	return tiddler;
+};
 
 })(jQuery);
 //}}}

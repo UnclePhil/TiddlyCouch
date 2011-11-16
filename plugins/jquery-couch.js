@@ -740,8 +740,10 @@ if (config.options.chkCouchLogoutShowBackstage==undefined)
           config.options[opt]="";
           readOnly=config.options.chkCouchLogoutReadOnly;
           showBackstage=config.options.chkCouchLogoutShowBackstage;
-          if(showBackstage)
-            backstage.init();
+          if(!showBackstage){
+            var but = jQuery("#backstageButton").empty()[0];
+            but.style.display = "none";
+          };  
           story.switchTheme(config.options.txtCouchLogoutTheme);
           refreshAll(); 
           story.refreshAllTiddlers(); 
