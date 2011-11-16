@@ -708,6 +708,8 @@ if (config.options.chkCouchLogoutShowBackstage==undefined)
             config.options[opt]=name;
             readOnly=config.options.chkCouchLoginReadOnly;
             showBackstage=config.options.chkCouchLoginShowBackstage;
+            if(showBackstage)
+              backstage.init();
             story.switchTheme(config.options.txtCouchLoginTheme);
             refreshAll(); 
             story.refreshAllTiddlers(); 
@@ -738,6 +740,8 @@ if (config.options.chkCouchLogoutShowBackstage==undefined)
           config.options[opt]="";
           readOnly=config.options.chkCouchLogoutReadOnly;
           showBackstage=config.options.chkCouchLogoutShowBackstage;
+          if(showBackstage)
+            backstage.init();
           story.switchTheme(config.options.txtCouchLogoutTheme);
           refreshAll(); 
           story.refreshAllTiddlers(); 
