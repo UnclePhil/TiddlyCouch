@@ -1,3 +1,9 @@
+#DO NOT USE IT FOR THE MOMENT,
+couchapp is generation a bad tiddlycouch.
+I'm searching "a unexpected token ,"
+
+unclephil 2011/11/20
+
 #TiddlyCouch : unclephil Version
 
 TiddlyCouch lets you serve a TiddlyWiki from CouchDB and read and write individual tiddlers to the database. Each tiddler is saved as a separate document.
